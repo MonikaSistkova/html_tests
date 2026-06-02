@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Test: Přívlastky</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #eef2f7; display: flex; justify-content: center; padding: 50px; }
+        .box { width: 90%; max-width: 600px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-top: 10px solid #007bff; }
+        .sentence { font-size: 22px; margin: 30px 0; min-height: 80px; color: #333; }
+        .target { background: #d1e7ff; padding: 4px 10px; border-radius: 6px; font-weight: bold; color: #0056b3; }
+        button { padding: 15px 25px; margin: 10px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; color: white; font-weight: 600; transition: 0.3s; }
+        .btn-pks { background-color: #007bff; }
+        .btn-pkn { background-color: #6610f2; }
+        button:hover { opacity: 0.8; }
+        #feedback { font-weight: bold; margin-top: 20px; font-size: 18px; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; text-align: left; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+
+<div class="box" id="app">
+    <h2>Urči typ přívlastku</h2>
+    <div class="sentence" id="sentence-text"></div>
+    <div>
+        <button class="btn-pks" onclick="check('PKs')">Shodný (PKs) ✨</button>
+        <button class="btn-pkn" onclick="check('PKn')">Neshodný (PKn) 🥾</button>
+    </div>
+    <div id="feedback"></div>
+</div>
+
+<script>
+    const data = [
+        { s: "Práci <span class='target'>z angličtiny</span> jsem dělal dlouhou dobu.", a: "PKn" },
+        { s: "Na kraji <span class='target'>města</span> postavili plavecký bazén.", a: "PKn" },
+        { s: "Na kraji města postavili <span class='target'>plavecký</span> bazén.", a: "PKs" },
+        { s: "<span class='target'>Krásné</span> dopoledne nám umožnilo exkurzi do údolí.", a: "PKs" },
+        { s: "Při <span class='target'>večerní</span> party jsme dlouho seděli u dohasínajícího ohně.", a: "PKs" },
+        { s: "Boty <span class='target'>z lýčí</span> nosil celý den roztrhané.", a: "PKn" },
+        { s: "Bratr byl zvolen <span class='target'>vedoucím</span> skupiny.", a: "PKs" },
+        { s: "Bratr byl zvolen vedoucím <span class='target'>skupiny</span>.", a: "PKn" },
+        { s: "Na <span class='target'>zeleninovém</span> záhonu rostly velké ředkvičky.", a: "PKs" },
+        { s: "Tetiččinu chalupu najdeme na <span class='target'>okraji</span> vesnice.", a: "PKn" }
+    ];
+
+    let i = 0;
+    let score = 0;
+    let results = [];
+
+    function show() {
+        if(i < data.length) {
+            document.getElementById('sentence-text').innerHTML = data[i].s;
+            document.getElementById('feedback').innerText = "";
+        } else {
+            showResults();
+        }
+    }
+
+    function check(val) {
+        let isCorrect = (val === data[i].a);
+        if(isCorrect) { score++; }
+        results.push({ s: data[i].s.replace(/<[^>]*>/g, ''), expected: data[i].a, user: val, ok: isCorrect });
+        
+        document.getElementById('feedback').innerText = isCorrect ? "Správně! ✅" : "Špatně! Správně: " + data[i].a + " ❌";
+        document.getElementById('feedback').style.color = isCorrect ? "green" : "red";
+        
+        i++;
+        setTimeout(show, 1200);
+    }
+
+    function showResults() {
+        let html = `<h2>Výsledky: ${score}/${data.length}</h2><table><tr><th>Věta</th><th>Výsledek</th></tr>`;
+        results.forEach(r => {
+            html += `<tr><td>${r.s}</td><td>${r.ok ? "✅" : "❌ (" + r.expected + ")"}</td></tr>`;
+        });
+        html += `</table><button class="btn-pks" onclick="location.reload()">Hrát znovu</button>`;
+        document.getElementById('app').innerHTML = html;
+    }
+
+    show();
+</script>
+</body>
+</html>
+
+```
