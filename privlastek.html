@@ -1,53 +1,71 @@
+Zde je kompletní kód v jednom HTML souboru. Stačí jej zkopírovat, uložit jako soubor s příponou `.html` (např. `test.html`) a otevřít v prohlížeči.
+
+```html
 <!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>Cvičení: Přívlastek shodný a neshodný</title>
+    <title>Interaktivní test: Přívlastky</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; background-color: #f4f4f9; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .sentence { margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #eee; }
-        .correct { color: green; font-weight: bold; }
-        .incorrect { color: red; text-decoration: line-through; }
-        h1 { color: #333; }
-        .label { font-weight: bold; color: #555; }
+        body { font-family: sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; padding-top: 50px; }
+        .box { width: 90%; max-width: 600px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        .sentence { font-size: 20px; margin: 30px 0; min-height: 60px; }
+        .target { background: #ffeeba; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #856404; }
+        button { padding: 12px 25px; margin: 10px; font-size: 16px; cursor: pointer; border: none; border-radius: 6px; color: white; }
+        .pks { background-color: #28a745; }
+        .pkn { background-color: #007bff; }
+        #feedback { font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Procvičování: Přívlastek shodný (PKs) a neshodný (PKn)</h1>
-        <p>Najdi a urči přívlastky v následujících větách:</p>
 
-        <div class="sentence">
-            1) Práci <span class="label">(PKn)</span> z angličtiny jsem dělal dlouhou <span class="label">(PKs)</span> dobu.
-        </div>
-        <div class="sentence">
-            2) Na kraji <span class="label">(PKn)</span> města postavili plavecký <span class="label">(PKs)</span> bazén.
-        </div>
-        <div class="sentence">
-            3) Krásné <span class="label">(PKs)</span> dopoledne nám umožnilo exkurzi do údolí <span class="label">(PKn)</span>.
-        </div>
-        <div class="sentence">
-            4) Při večerní <span class="label">(PKs)</span> party jsme dlouho seděli u dohasínajícího <span class="label">(PKs)</span> ohně.
-        </div>
-        <div class="sentence">
-            5) Boty <span class="label">(PKn)</span> z lýčí nosil celý <span class="label">(PKs)</span> den roztrhané.
-        </div>
-        <div class="sentence">
-            6) Bratr byl zvolen vedoucím <span class="label">(PKn)</span> skupiny.
-        </div>
-        <div class="sentence">
-            7) Na zeleninovém <span class="label">(PKs)</span> záhonu rostly velké <span class="label">(PKs)</span> ředkvičky.
-        </div>
-        <div class="sentence">
-            8) Tetiččinu <span class="label">(PKs)</span> chalupu najdeme na okraji <span class="label">(PKn)</span> vesnice.
-        </div>
-        <div class="sentence">
-            9) Dopoledne začíná tenisový <span class="label">(PKs)</span> turnaj.
-        </div>
-        <div class="sentence">
-            10) Maminka odmítla podepsat můj <span class="label">(PKs)</span> úkol.
-        </div>
+<div class="box">
+    <h2>Urči typ přívlastku</h2>
+    <div class="sentence" id="sentence-text"></div>
+    <div>
+        <button class="pks" onclick="check('PKs')">Přívlastek shodný (PKs) ✨</button>
+        <button class="pkn" onclick="check('PKn')">Přívlastek neshodný (PKn) 🥾</button>
     </div>
+    <div id="feedback"></div>
+</div>
+
+<script>
+    const data = [
+        { s: "Práci <span class='target'>z angličtiny</span> jsem dělal dlouhou dobu.", a: "PKn" },
+        { s: "Na kraji <span class='target'>města</span> postavili plavecký bazén.", a: "PKn" },
+        { s: "Na kraji města postavili <span class='target'>plavecký</span> bazén.", a: "PKs" },
+        { s: "<span class='target'>Krásné</span> dopoledne nám umožnilo exkurzi do údolí.", a: "PKs" },
+        { s: "Při <span class='target'>večerní</span> party jsme dlouho seděli u dohasínajícího ohně.", a: "PKs" },
+        { s: "Boty <span class='target'>z lýčí</span> nosil celý den roztrhané.", a: "PKn" },
+        { s: "Bratr byl zvolen <span class='target'>vedoucím</span> skupiny.", a: "PKs" },
+        { s: "Bratr byl zvolen vedoucím <span class='target'>skupiny</span>.", a: "PKn" },
+        { s: "Na <span class='target'>zeleninovém</span> záhonu rostly velké ředkvičky.", a: "PKs" },
+        { s: "Tetiččinu chalupu najdeme na <span class='target'>okraji</span> vesnice.", a: "PKn" }
+    ];
+
+    let i = 0;
+    function show() {
+        if(i < data.length) {
+            document.getElementById('sentence-text').innerHTML = data[i].s;
+            document.getElementById('feedback').innerText = "";
+        } else {
+            document.querySelector('.box').innerHTML = "<h2>Hotovo! 🎉</h2>";
+        }
+    }
+    function check(val) {
+        if(val === data[i].a) {
+            document.getElementById('feedback').innerText = "Správně! ✅";
+            document.getElementById('feedback').style.color = "green";
+        } else {
+            document.getElementById('feedback').innerText = "Chyba, bylo to " + data[i].a + " ❌";
+            document.getElementById('feedback').style.color = "red";
+        }
+        i++;
+        setTimeout(show, 1500);
+    }
+    show();
+</script>
 </body>
 </html>
+
+```
