@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Němčina – Interaktivní test z restaurace</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: background 0.3s;
+        }
+        .options button:hover {
+            background: #2980b9;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #27ae60;
+        }
+        .incorrect {
+            color: #c0392b;
+        }
+        #result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🍽️ Němčina v restauraci – Test</h1>
+
+    <div class="question-card" id="q1">
+        <p><strong>1. Doplň správný tvar slovesa mögen:</strong><br>Ich ______ Kaffee.</p>
+        <div class="options">
+            <button onclick="checkAnswer(1, 'A', false)">A) mögen</button>
+            <button onclick="checkAnswer(1, 'B', true)">B) mag</button>
+            <button onclick="checkAnswer(1, 'C', false)">C) möchtest</button>
+        </div>
+        <div class="feedback" id="f1"></div>
+    </div>
+
+    <div class="question-card" id="q2">
+        <p><strong>2. Doplň správný tvar slovesa möchten:</strong><br>Was ______ Sie trinken?</p>
+        <div class="options">
+            <button onclick="checkAnswer(2, 'A', true)">A) möchten</button>
+            <button onclick="checkAnswer(2, 'B', false)">B) möchtet</button>
+            <button onclick="checkAnswer(2, 'C', false)">C) mag</button>
+        </div>
+        <div class="feedback" id="f2"></div>
+    </div>
+
+    <div class="question-card" id="q3">
+        <p><strong>3. Vyber větu se správným slovosledem (infinitiv na konci):</strong></p>
+        <div class="options">
+            <button onclick="checkAnswer(3, 'A', false)">A) Ich möchte trinken eine Apfelschorle.</button>
+            <button onclick="checkAnswer(3, 'B', true)">B) Ich möchte eine Apfelschorle trinken.</button>
+        </div>
+        <div class="feedback" id="f3"></div>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        let score = 0;
+        let answered = 0;
+
+        function checkAnswer(questionNum, selectedOption, isCorrect) {
+            const card = document.getElementById('q' + questionNum);
+            const feedback = document.getElementById('f' + questionNum);
+            const buttons = card.querySelectorAll('button');
+
+            // Zablokování tlačítek po odpovědi
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                feedback.textContent = "Správně! 🎉";
+                feedback.className = "feedback correct";
+                score++;
+            } else {
+                feedback.textContent = "Bohužel, špatně. ❌";
+                feedback.className = "feedback incorrect";
+            }
+
+            answered++;
+
+            // Kontrola, zda jsou zodpovězené všechny otázky
+            if (answered === 3) {
+                document.getElementById('result').textContent = `Konec testu! Tvoje skóre je: ${score} / 3 🏆`;
+            }
+        }
+    </script>
+
+</body>
+</html>
+
